@@ -1,0 +1,17 @@
+*.ac	crlf
+*.ac.in	crlf
+*.in	crlf
+*.am	crlf
+*.am.in	crlf
+
+*.pm	crlf
+*.pm.in	crlf
+*.m4	crlf
+*.m4.in	crlf
+*.scm	crlf
+*.as	crlf
+
+*.h	crlf
+*.h.in	crlf
+*.c	crlf
+*.cxx	crlf

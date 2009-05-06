@@ -1,0 +1,74 @@
+OUTPUT_FORMAT("elf32-i386", "elf32-i386", "elf32-i386")
+OUTPUT_ARCH(i386)
+ENTRY(entry_point)
+
+SECTIONS {
+
+	 /* NOTE: CONFIG_LMA and CONFIG_VMA extracted from src/mem/rules.cfg */
+	. = @CONFIG_LMA@;
+
+	_start = .;
+
+	.text : {
+                *(.multiboot)
+		*(.text)
+		*(.text.*)
+	}
+
+	.rodata : {
+		*(.rodata)
+		*(.rodata.*)
+	}
+
+	.data : {
+		*(.data)
+		*(.data.*)
+
+		/* C++ constructors */
+		/* . = ALIGN(4096); */ /* Needed for skipping auto-fill */
+		__CTOR_LIST__ = .;
+		*(.ctors)
+		__CTOR_END__ = .;
+
+		/* C++ destructors */
+		/* . = ALIGN(4096); */ /* Needed for skipping auto-fill */
+		__DTOR_LIST__ = .;
+		*(.dtors)
+		__DTOR_END__ = .;
+
+		/* C initializers */
+		/* . = ALIGN(4096); */ /* Needed for skipping auto-fill */
+		__INIT_LIST__ = .;
+		*(.init)
+		__INIT_END__ = .;
+
+		/* C finalizers */
+		/* . = ALIGN(4096); */ /* Needed for skipping auto-fill */
+		__FINI_LIST__ = .;
+		*(.fini)
+		__FINI_END__ = .;
+	}
+
+	.bss : {
+                _bss = .;
+
+		*(.bss)
+
+                _ebss = .;
+	}
+
+	.cxx : {
+		*(.eh_frame)
+		*(.gcc_except_table)
+	}
+
+	.debug : {
+		_debug = .;
+
+		*(.debug*)
+
+		_edebug = .;
+	}
+
+	_end = .;
+}
