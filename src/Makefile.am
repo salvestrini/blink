@@ -117,6 +117,8 @@ blink_LDADD        =				\
 ## Miscellaneous targets
 ##
 stats:
+	@echo "Stats:"
+	@$(BFD_SECTION_STAT) -- $(bin_PROGRAMS)
 
 map:
 

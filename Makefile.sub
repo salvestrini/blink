@@ -72,7 +72,8 @@ do_subst_SPECIFIC = \
   \
   -e 's,[@]OBJDUMP[@],$(OBJDUMP),g' \
   -e 's,[@]NM[@],$(NM),g' \
-  -e 's,[@]CXXFILT[@],$(CXXFILT),g'
+  -e 's,[@]CXXFILT[@],$(CXXFILT),g' \
+  -e 's,[@]BFD_SECTION_STAT[@],$(BFD_SECTION_STAT),g'
 
 do_subst = $(SED) \
   $(do_subst_AUTOTOOLS) \
