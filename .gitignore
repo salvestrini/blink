@@ -25,6 +25,7 @@ config.log
 config.status
 
 src/blink
+src/system.map
 src/config.h
 src/config.h.in
 src/stamp-h1

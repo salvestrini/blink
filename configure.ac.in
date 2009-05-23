@@ -83,6 +83,9 @@ AX_PATH_MISSING([PERL],[perl],[perl seems missing ...])
 AC_ARG_VAR(PYTHON, [Full path to the 'python' executable])
 AX_PATH_MISSING([PYTHON],[python],[python seems missing ...])
 
+AC_ARG_VAR(NM, [Full path to the 'nm' executable])
+AX_PATH_MISSING([NM],[nm],[nm seems missing ...])
+
 AC_PROG_INSTALL
 AC_PROG_MKDIR_P
 

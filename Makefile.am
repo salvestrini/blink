@@ -40,7 +40,7 @@ AUTOMAKE_OPTIONS = check-news
 stats:
 	(cd src && $(MAKE) $(AM_MAKEFLAGS) stats)
 
-map:
+debug:
 	(cd src && $(MAKE) $(AM_MAKEFLAGS) map)
 
 ##

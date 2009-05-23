@@ -113,14 +113,26 @@ blink_LDFLAGS      =				\
 blink_LDADD        =				\
 	$(ELKLIB_LDADD)
 
+
 ##
-## Miscellaneous targets
+## statistics related
 ##
 stats:
+	@echo ""
 	@echo "Stats:"
-	@$(BFD_SECTION_STAT) -- $(bin_PROGRAMS)
+	@$(BFD_SECTION_STAT) -- $(bin_PROGRAMS) || exit 1
 
-map:
+##
+## map related
+##
+MAPFILE = system.map
+CLEANFILES += $(MAPFILE)
+map: Makefile $(bin_PROGRAMS)
+	$(NM) -a $(bin_PROGRAMS) > $(MAPFILE) || { \
+		rm -f $(MAPFILE) ; \
+		exit 1 ; \
+	}
+
 
 ##
 ## Maintainer related targets
