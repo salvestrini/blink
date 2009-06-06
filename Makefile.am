@@ -25,7 +25,8 @@ ACLOCAL_AMFLAGS = -I tools/autotools/m4
 SUBDIRS =					\
 	tools					\
 	src					\
-	docs
+	docs					\
+	site
 
 ##
 ## NOTE:
@@ -183,6 +184,9 @@ announcement:
 	  --curr=$(PACKAGE_VERSION)		\
 	  --gpg-key-id=TEST			\
 	  --url-dir=TEST
+
+site: all
+	(cd site && $(MAKE) $(AM_MAKEFLAGS) site)
 
 HOST = "http://git.savannah.gnu.org/gitweb/?p=gnulib.git;a=blob_plain;hb=HEAD;f="
 
