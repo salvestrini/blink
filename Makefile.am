@@ -66,7 +66,8 @@ EXTRA_DIST =						\
 	BUGS README COPYING AUTHORS INSTALL THANKS	\
 	bootstrap					\
 	configure.ac.in					\
-	.todo
+	.todo						\
+	.dnt.db
 
 ##
 ## Maintainer related targets
@@ -105,13 +106,12 @@ MAINTAINERCLEANFILES += TODO
 NEWS: $(DNT_DB)
 	start="" ;								  \
 	end="`date +"%Y-%m-%d"`" ;						  \
-	script="$(GITTAG_TO_DATE)";						  \
+	script="$(GITTAG_TO_DATE)" ;						  \
 	rm -f NEWS ;								  \
-	for i in `$$script | $(SED) -e 's,.*\ ,,' | sort -r -k 2` ;		  \
-	do									  \
-		start="$$i" ;							  \
-		echo "$$start -> $$end" ;					  \
-		echo "$$end:" >> NEWS;						  \
+	(for i in `$$script | sort -r -k 2 | $(SED) -e 's,\ ,_,g'` ;		  \
+	 do									  \
+		start="`echo $$i | $(SED) -e 's,^.*_,,'`" ;			  \
+		tag="`echo $$i | $(SED) -e 's,_.*$$,,'`" ;			  \
 		$(DNT) $(DNT_FLAGS)						  \
 			show							  \
 			--filter="start>=\"$$start\" and end<=\"$$end\" and done" \
@@ -121,11 +121,18 @@ NEWS: $(DNT_DB)
 			--unindent-fill=""					  \
 			--width=0						  \
 			--hide-collapsed					  \
-		>> NEWS ;							  \
-		echo "" >> NEWS ;						  \
+		> NEWS.tmp ;							  \
+		if test ! "x`${SED} -n '$$=' < NEWS.tmp`" = "x" ; then		  \
+			echo "$$end ($$tag):" >> NEWS ;				  \
+			cat NEWS.tmp >> NEWS ;					  \
+			echo "" >> NEWS ;					  \
+			echo "$$start -> $$end : Ok" ;				  \
+		else								  \
+			echo "$$start -> $$end : Empty" ;			  \
+		fi ;								  \
 		end="$$start" ;							  \
-		start=$$i ;							  \
-	done || {								  \
+	done && rm -f NEWS.tmp) || {						  \
+		rm -f NEWS.tmp ;						  \
 		rm -f NEWS ;							  \
 		exit 1 ;							  \
 	}
