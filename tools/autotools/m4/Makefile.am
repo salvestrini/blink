@@ -87,7 +87,8 @@ update-local: Makefile
 		} \
 	done && \
 	for i in $(DOWNLOAD) ; do \
-		mv fetch-dir/$$i $$i || { \
+		mv fetch-dir/$$i $$i && \
+		touch $$i || { \
 			exit 1 ; \
 		} \
 	done && \
