@@ -45,11 +45,11 @@
 
 static unsigned long cr0_get(void)
 {
-	register unsigned long cr0;
+        register unsigned long cr0;
 
-	__asm__ volatile ("movl %%cr0, %0" : "=r" (cr0) : );
+        __asm__ volatile ("movl %%cr0, %0" : "=r" (cr0) : );
 
-	return cr0;
+        return cr0;
 }
 
 /*
@@ -75,40 +75,40 @@ static unsigned long cr0_get(void)
 
 static unsigned long eflags_get(void)
 {
-	unsigned long ef;
+        unsigned long ef;
 
-	__asm__ volatile ("pushf; popl %0" : "=r" (ef));
+        __asm__ volatile ("pushf; popl %0" : "=r" (ef));
 
-	return ef;
+        return ef;
 }
 
 static int check_machine_state(void)
 {
-	uint32_t tmp;
+        uint32_t tmp;
 
-	/* Check CR0 state */
-	tmp = cr0_get();
-	if (tmp & CR0_PG) {
-		printf("Paging flag already set\n");
-		return 0;
-	}
-	if (!(tmp & CR0_PE)) {
-		printf("No protected mode flag set\n");
-		return 0;
-	}
+        /* Check CR0 state */
+        tmp = cr0_get();
+        if (tmp & CR0_PG) {
+                printf("Paging flag already set\n");
+                return 0;
+        }
+        if (!(tmp & CR0_PE)) {
+                printf("No protected mode flag set\n");
+                return 0;
+        }
 
-	/* Check eflags state */
-	tmp = eflags_get();
-	if (tmp & EFLAGS_VM) {
-		printf("Virtual mode flag already set\n");
-		return 0;
-	}
-	if (tmp & EFLAGS_IF) {
-		printf("Interrupt flag already set\n");
-		return 0;
-	}
+        /* Check eflags state */
+        tmp = eflags_get();
+        if (tmp & EFLAGS_VM) {
+                printf("Virtual mode flag already set\n");
+                return 0;
+        }
+        if (tmp & EFLAGS_IF) {
+                printf("Interrupt flag already set\n");
+                return 0;
+        }
 
-	return 1;
+        return 1;
 }
 
 extern void crt2(multiboot_info_t * mbi);
@@ -116,10 +116,10 @@ extern void crt2(multiboot_info_t * mbi);
 void crt1(unsigned long magic,
           unsigned long addr)
 {
-	/*
-	 * NOTE:
-	 *     Add early support, call it as soon as possible
-	 */
+        /*
+         * NOTE:
+         *     Add early support, call it as soon as possible
+         */
         (void) elklib_c_init();
 
         /* Turn off all streams ... */
@@ -135,15 +135,15 @@ void crt1(unsigned long magic,
 
         printf("%s booting ...\n", PACKAGE_NAME);
 
-	/* Am I booted by a Multiboot-compliant boot loader?  */
-	if (magic != MULTIBOOT_BOOTLOADER_MAGIC) {
-		panic("Invalid magic number: 0x%x", (unsigned) magic);
-	}
-	/* Yes, it seems so ... */
+        /* Am I booted by a Multiboot-compliant boot loader?  */
+        if (magic != MULTIBOOT_BOOTLOADER_MAGIC) {
+                panic("Invalid magic number: 0x%x", (unsigned) magic);
+        }
+        /* Yes, it seems so ... */
 
-	if (!check_machine_state()) {
-		panic("Wrong machine state");
-	}
+        if (!check_machine_state()) {
+                panic("Wrong machine state");
+        }
 
         multiboot_info_t * mbi;
 

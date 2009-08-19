@@ -26,15 +26,15 @@
 
 int arch_stdio_putchar(int c)
 {
-	return vga_putchar(c);
+        return vga_putchar(c);
 }
 
 int arch_stdio_init(void)
 {
-	return vga_init();
+        return vga_init();
 }
 
 void arch_stdio_fini(void)
 {
-	vga_fini();
+        vga_fini();
 }

@@ -17,7 +17,7 @@
  *
  */
 
-#define ASM	     1
+#define ASM          1
 
 #include "config.h"
 #include "multiboot/multiboot.h"
@@ -26,76 +26,76 @@
 #define RESET_EFLAGS 1
 #define CLEAR_BSS    1
 
-	.section .text
+        .section .text
 
-	.global entry_point
+        .global entry_point
 
 entry_point:
 
-	jmp	multiboot_entry
+        jmp     multiboot_entry
 
-	/* Align 32 bits boundary */
-	.align	4
+        /* Align 32 bits boundary */
+        .align  4
 
-	.section .multiboot
+        .section .multiboot
 
-	/* Multiboot header */
+        /* Multiboot header */
 multiboot_header:
-	/* magic */
-	.long	MULTIBOOT_HEADER_MAGIC
-	/* flags */
-	.long	MULTIBOOT_HEADER_FLAGS
-	/* checksum */
-	.long	-(MULTIBOOT_HEADER_MAGIC + MULTIBOOT_HEADER_FLAGS)
+        /* magic */
+        .long   MULTIBOOT_HEADER_MAGIC
+        /* flags */
+        .long   MULTIBOOT_HEADER_FLAGS
+        /* checksum */
+        .long   -(MULTIBOOT_HEADER_MAGIC + MULTIBOOT_HEADER_FLAGS)
 
 multiboot_entry:
-	/* Switch to our stack pointer */
-	movl	$(stack + STACK_SIZE), %esp
+        /* Switch to our stack pointer */
+        movl    $(stack + STACK_SIZE), %esp
 
-	/* Save multiboot infos */
-	/* Push the pointer to the Multiboot information structure.  */
-	pushl	%ebx
-	/* Push the magic value.  */
-	pushl	%eax
+        /* Save multiboot infos */
+        /* Push the pointer to the Multiboot information structure.  */
+        pushl   %ebx
+        /* Push the magic value.  */
+        pushl   %eax
 
-	/* Turn IRQs off */
-	cli
+        /* Turn IRQs off */
+        cli
 
 #if RESET_EFLAGS
-	/* Reset EFLAGS to a known state */
-	pushl	$0
-	popf
+        /* Reset EFLAGS to a known state */
+        pushl   $0
+        popf
 #endif
 
 #if CLEAR_BSS
-	/* Clean-up the .bss segment */
-	cld
-	xorl	%eax, %eax
-	movl	$_bss, %edi
-	movl	$_ebss, %ecx
-	subl	%edi, %ecx
-	shrl	$2, %ecx
-	rep	; stosl
+        /* Clean-up the .bss segment */
+        cld
+        xorl    %eax, %eax
+        movl    $_bss, %edi
+        movl    $_ebss, %ecx
+        subl    %edi, %ecx
+        shrl    $2, %ecx
+        rep     ; stosl
 
-	/* Restore multiboot infos into registers */
-	popl	%eax
-	popl	%ebx
-	pushl	%ebx
-	pushl	%eax
+        /* Restore multiboot infos into registers */
+        popl    %eax
+        popl    %ebx
+        pushl   %ebx
+        pushl   %eax
 #endif
 
-	/* Call the entry point */
-	call    EXT_C(crt1)
+        /* Call the entry point */
+        call    EXT_C(crt1)
 
         pushl   $halt_message
         call    EXT_C(printf)
 
-	/* We shouldn't reach this point ... */
+        /* We shouldn't reach this point ... */
 loop:   hlt
-	jmp     loop
+        jmp     loop
 
 halt_message:
         .asciz  "BLink halted ..."
 
-	/* Our stack area */
-	.comm	stack, STACK_SIZE
+        /* Our stack area */
+        .comm   stack, STACK_SIZE

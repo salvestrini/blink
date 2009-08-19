@@ -37,38 +37,38 @@
 static int scan_modules(multiboot_info_t * mbi,
                         uint_t *           base)
 {
-	assert(mbi);
+        assert(mbi);
         assert(base);
 
         printf("Checking multiboot modules ...\n");
 
-	/* Are mods_* valid?  */
+        /* Are mods_* valid?  */
         if (CHECK_FLAG(mbi->flags, 3)) {
-		module_t *   mod;
-		unsigned int i;
-		unsigned int j;
+                module_t *   mod;
+                unsigned int i;
+                unsigned int j;
 
-		printf("Handling modules (count = %d, addr = 0x%x)\n",
+                printf("Handling modules (count = %d, addr = 0x%x)\n",
                        (int) mbi->mods_count, (int) mbi->mods_addr);
 
-		/* NOTE: mods_count may be 0 */
-		assert((int) mbi->mods_count >= 0);
+                /* NOTE: mods_count may be 0 */
+                assert((int) mbi->mods_count >= 0);
 
-		j   = 0;
-		mod = (module_t *) mbi->mods_addr;
-		for (i = 0; i < mbi->mods_count; i++) {
-			assert(mod);
-			assert(mod->string);
+                j   = 0;
+                mod = (module_t *) mbi->mods_addr;
+                for (i = 0; i < mbi->mods_count; i++) {
+                        assert(mod);
+                        assert(mod->string);
 
-			printf("   0x%x: (0x%x-0x%x) '%s'\n",
+                        printf("   0x%x: (0x%x-0x%x) '%s'\n",
                                mod,
                                (unsigned int) mod->mod_start,
                                (unsigned int) mod->mod_end,
                                (char *)       mod->string);
 
-			assert(mod->mod_start);
-			assert(mod->mod_end);
-			assert(mod->mod_start <= mod->mod_end);
+                        assert(mod->mod_start);
+                        assert(mod->mod_end);
+                        assert(mod->mod_start <= mod->mod_end);
 
                         /*
                          * XXX FIXME:
@@ -79,32 +79,32 @@ static int scan_modules(multiboot_info_t * mbi,
                                 *base = mod->mod_end + 1;
                                 printf("Heap base moved to 0x%x\n", *base);
                         }
-		}
-	} else {
-		printf("No mod_* infos available in multiboot header\n");
-	}
+                }
+        } else {
+                printf("No mod_* infos available in multiboot header\n");
+        }
 
-	return 1;
+        return 1;
 }
 
 static int scan_myself(multiboot_info_t * mbi,
                        bfd_image_t *      img,
                        uint_t *           base)
 {
-	assert(mbi);
+        assert(mbi);
         assert(img);
         assert(base);
 
         printf("Checking multiboot image ...\n");
 
-	/* Bits 4 and 5 are mutually exclusive!  */
+        /* Bits 4 and 5 are mutually exclusive!  */
         if (CHECK_FLAG(mbi->flags, 4) && CHECK_FLAG(mbi->flags, 5)) {
                 printf("Multiboot image format is both ELF and AOUT ?");
-		return 0;
-	}
+                return 0;
+        }
 
-	/* Is the section header table of ELF valid?  */
-	if (CHECK_FLAG(mbi->flags, 5)) {
+        /* Is the section header table of ELF valid?  */
+        if (CHECK_FLAG(mbi->flags, 5)) {
                 elf_section_header_table_t * section;
                 unsigned int                 num;
                 unsigned int                 size;
@@ -136,11 +136,11 @@ static int scan_myself(multiboot_info_t * mbi,
                 }
 
         } else {
-		printf("No ELF section header table available\n");
+                printf("No ELF section header table available\n");
                 return 0;
         }
 
-	return 1;
+        return 1;
 }
 
 static bfd_image_t blink_image;
@@ -153,36 +153,36 @@ void crt2(multiboot_info_t * mbi)
         assert(mbi);
 
 #if 0
-	if (CHECK_FLAG(mbi->flags, 9)) {
-		printf("We have been booted by: '%s'\n",
+        if (CHECK_FLAG(mbi->flags, 9)) {
+                printf("We have been booted by: '%s'\n",
                        (char *) mbi->boot_loader_name);
-	}
+        }
 #endif
 
-	/* Print out the flags */
-	printf("Multiboot flags = 0x%x\n", (unsigned int) mbi->flags);
+        /* Print out the flags */
+        printf("Multiboot flags = 0x%x\n", (unsigned int) mbi->flags);
 
         heap_base = 0;
         heap_size = 0;
 
-	/* Is memory information available ? */
-	if (CHECK_FLAG(mbi->flags, 0)) {
-		printf("mem_lower = %d KB, mem_upper = %d KB\n",
+        /* Is memory information available ? */
+        if (CHECK_FLAG(mbi->flags, 0)) {
+                printf("mem_lower = %d KB, mem_upper = %d KB\n",
                        (unsigned int) mbi->mem_lower,
                        (unsigned int) mbi->mem_upper);
-	}
+        }
 
         if (!bfd_init()) {
                 panic("Cannot initialize bfd subsystem");
         }
 
         /* Check multiboot infos while looking for our heap base */
-	if (!scan_myself(mbi, &blink_image, &heap_base)) {
-		panic("Cannot scan image info correctly");
-	}
-	if (!scan_modules(mbi, &heap_base)) {
-		panic("Cannot scan modules infos correctly");
-	}
+        if (!scan_myself(mbi, &blink_image, &heap_base)) {
+                panic("Cannot scan image info correctly");
+        }
+        if (!scan_modules(mbi, &heap_base)) {
+                panic("Cannot scan modules infos correctly");
+        }
         if (heap_base == 0) {
                 panic("Cannot detect heap base");
         }
@@ -199,12 +199,12 @@ void crt2(multiboot_info_t * mbi)
         }
 
         /* Initialize the heap now */
-	if (!heap_init(heap_base, heap_size)) {
-		panic("Cannot initialize heap");
-	}
-	assert(heap_initialized());
+        if (!heap_init(heap_base, heap_size)) {
+                panic("Cannot initialize heap");
+        }
+        assert(heap_initialized());
 
-	/* From this point on we are allowed to use malloc() and free() ... */
+        /* From this point on we are allowed to use malloc() and free() ... */
 
         /* Print heap infos */
         printf("Heap base = 0x%x, size = %d KB\n", heap_base, heap_size);

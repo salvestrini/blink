@@ -42,77 +42,77 @@ extern unsigned long _end;
 
 void arch_panic(const char * message)
 {
-	static int panic_in_progress = 0;
+        static int panic_in_progress = 0;
 #if DEMANGLE
         uint_t     frames;
         uint_t     i;
 #endif
 
-	panic_in_progress++;
-	if (panic_in_progress > 1) {
+        panic_in_progress++;
+        if (panic_in_progress > 1) {
                 printf("Panic in progress ...\n");
-		return;
-	}
+                return;
+        }
 
-	/* Print the message (if any) */
-	if (!message) {
-		message = "EMPTY ???";
-	}
-	printf("Kernel panic: %s\n", message);
+        /* Print the message (if any) */
+        if (!message) {
+                message = "EMPTY ???";
+        }
+        printf("Kernel panic: %s\n", message);
 
 #if DEMANGLE
-	frames = arch_backtrace_store(backtrace, MAX_STACK_LEVELS);
-	assert(frames <= MAX_STACK_LEVELS);
+        frames = arch_backtrace_store(backtrace, MAX_STACK_LEVELS);
+        assert(frames <= MAX_STACK_LEVELS);
 
         for (i = 0; i < frames; i++) {
-		void * base;
-		char * symbol;
+                void * base;
+                char * symbol;
 
 #if 0
                 assert(backtrace[i] >= &_start);
                 assert(backtrace[i] <= &_end);
 #endif
 
-		/* Resolve the symbol base */
-		if (bfd_symbol_reverse_lookup((void *) backtrace[i],
-					      mangled_symbol,
-					      MAX_SYMBOL_LENGTH,
-					      &base)) {
-			unsigned int delta;
+                /* Resolve the symbol base */
+                if (bfd_symbol_reverse_lookup((void *) backtrace[i],
+                                              mangled_symbol,
+                                              MAX_SYMBOL_LENGTH,
+                                              &base)) {
+                        unsigned int delta;
 
-			symbol  = demangle(mangled_symbol);
-			if (!symbol) {
-				/* No luck this time */
-				symbol  = mangled_symbol;
+                        symbol  = demangle(mangled_symbol);
+                        if (!symbol) {
+                                /* No luck this time */
+                                symbol  = mangled_symbol;
                         }
 
-			/*
-			 * NOTE:
-			 *     Compute the difference between backtrace
-			 *     and base ...
-			 */
-			delta = backtrace[i] - (unsigned int) base;
-			if (delta) {
-				/* Delta is precious ... */
-				printf("  %p <%s+0x%x>\n",
-					base, symbol, delta);
-			} else {
-				/* Huh ... hang in function call ? */
-				printf("  %p <%s>\n",
-				       base, symbol);
-			}
-		} else {
-			/* Hmm ... No symbol found ??? */
-			printf("  %p <?>\n", backtrace[i]);
-		}
+                        /*
+                         * NOTE:
+                         *     Compute the difference between backtrace
+                         *     and base ...
+                         */
+                        delta = backtrace[i] - (unsigned int) base;
+                        if (delta) {
+                                /* Delta is precious ... */
+                                printf("  %p <%s+0x%x>\n",
+                                        base, symbol, delta);
+                        } else {
+                                /* Huh ... hang in function call ? */
+                                printf("  %p <%s>\n",
+                                       base, symbol);
+                        }
+                } else {
+                        /* Hmm ... No symbol found ??? */
+                        printf("  %p <?>\n", backtrace[i]);
+                }
         }
 #endif
 
-	panic_in_progress--;
+        panic_in_progress--;
 
         arch_halt();
         arch_reset();
 
-	printf("Cannot halt or reset the hardware ...\n");
+        printf("Cannot halt or reset the hardware ...\n");
         for (;;) { /* hmmmm .... */ }
 }
