@@ -139,8 +139,7 @@ map: Makefile $(bin_PROGRAMS)
 ##
 update-local: Makefile
 
-all_SRCS =					\
-	$(blink_SOURCES)
+maintainer-check-whitespaces: Makefile
+	$(WHITESPACE_DETECT) $(blink_SOURCES)
 
-maintainer-check-local: Makefile
-	$(WHITESPACE_DETECT)  $(all_SRCS)
+maintainer-check-local: Makefile maintainer-check-whitespaces
