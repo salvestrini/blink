@@ -34,6 +34,33 @@
 
 #define CHECK_FLAG(FLAGS,BIT) ((FLAGS) & (1 << (BIT)))
 
+static void fill_dl(multiboot_info_t * mbi,
+                    dl_list_t *        dl)
+{
+        assert(mbi);
+        assert(dl);
+
+        printf("Building dl list ...\n");
+
+        module_t *   mod;
+        unsigned int i;
+        unsigned int j;
+
+        printf("Handling modules (count = %d, addr = 0x%x)\n",
+               (int) mbi->mods_count, (int) mbi->mods_addr);
+
+        /* NOTE: mods_count may be 0 */
+        assert((int) mbi->mods_count >= 0);
+
+        j   = 0;
+        mod = (module_t *) mbi->mods_addr;
+        for (i = 0; i < mbi->mods_count; i++) {
+                printf("  dl-loading module `%s'\n", mod->string);
+                dl_load((void *) mod->mod_start,
+                        mod->mod_end - mod->mod_start + 1);
+        }
+}
+
 static int scan_modules(multiboot_info_t * mbi,
                         uint_t *           base)
 {
@@ -202,17 +229,17 @@ void crt2(multiboot_info_t * mbi)
         if (!heap_init(heap_base, heap_size)) {
                 panic("Cannot initialize heap");
         }
+        printf("Heap base = 0x%x, size = %d KB\n", heap_base, heap_size);
         assert(heap_initialized());
 
-        /* From this point on we are allowed to use malloc() and free() ... */
-
-        /* Print heap infos */
-        printf("Heap base = 0x%x, size = %d KB\n", heap_base, heap_size);
-
-        dl_list_t dl;
-        dl = (dl_list_t) xmalloc(sizeof(dl_list_t));
+        /*
+         * From this point on we are allowed to use malloc() and free() ...
+         */
 
         /* Move interesting information inside dl data */
+        dl_list_t dl;
+        dl = (dl_list_t) xmalloc(sizeof(dl_list_t));
+        fill_dl(mbi, &dl);
 
         /* Call main program */
         core(dl);
