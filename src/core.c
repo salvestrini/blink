@@ -39,6 +39,6 @@ void core(dl_list_t dl)
 
         /* Jump to the entry point */
 
-        /* Argh ... */
+        /* Argh, we shouldn't have reached this point ... */
         panic("Cannot jump to the entry point");
 }
