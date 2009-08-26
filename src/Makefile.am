@@ -118,8 +118,6 @@ blink_LDADD        =				\
 ## statistics related
 ##
 stats:
-	@echo ""
-	@echo "Stats:"
 	@$(BFD_SECTION_STAT) -- $(bin_PROGRAMS) || exit 1
 
 ##
