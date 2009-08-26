@@ -31,8 +31,6 @@ void * xmalloc(size_t size)
                 panic("Cannot allocate %d bytes of memory\n", size);
         }
 
-        assert(tmp);
-
         return tmp;
 }
 
