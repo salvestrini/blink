@@ -20,7 +20,11 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 
-AC_INIT([BLink],[@VERSION@],[salvestrini@gmail.com],[blink])
+AC_INIT([BLink],
+        m4_esyscmd([tools/maint/git-version-gen .tarball-version]),
+        [salvestrini@gmail.com],
+        [blink],
+        [http://github.com/salvestrini/blink])
 
 # Check for a recent version of autoconf
 AC_PREREQ([2.64])
