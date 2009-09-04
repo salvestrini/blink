@@ -50,6 +50,8 @@ AM_INIT_AUTOMAKE([1.10 foreign nostdinc std-options -Wall])
 #
 AC_PROG_GREP
 AC_PROG_SED
+AC_PROG_INSTALL
+AC_PROG_MKDIR_P
 
 AX_PATH_MISSING([PERL],             [perl])
 AX_PATH_MISSING([WGET],             [wget])
@@ -74,16 +76,6 @@ API_VERSION="${AX_MAJOR_VERSION}.${AX_MINOR_VERSION}"
 AC_SUBST(AX_PACKAGE_MAJOR,$AX_MAJOR_VERSION)
 AC_SUBST(AX_PACKAGE_MINOR,$AX_MINOR_VERSION)
 AC_SUBST(AX_PACKAGE_MICRO,$AX_POINT_VERSION)
-
-#
-# Check for programs that SHOULD (or MUST) be available into the system
-#
-# NOTE:
-#     Some of them (perl, python) are maintainer related, don't remove those
-#     checks ...
-#
-AC_PROG_INSTALL
-AC_PROG_MKDIR_P
 
 # Gather supported flags while checking programs and their features
 AX_CONFIG_CPPFLAGS=""
