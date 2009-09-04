@@ -51,7 +51,6 @@ AM_INIT_AUTOMAKE([1.10 foreign nostdinc std-options -Wall])
 AC_PROG_GREP
 AC_PROG_SED
 
-AX_PATH_MISSING([SITETOOL],         [sitetool])
 AX_PATH_MISSING([WGET],             [wget])
 AX_PATH_MISSING([DNT],              [dnt])
 AX_PATH_MISSING([DEVTODO_TO_DNT],   [devtodo-to-dnt])
@@ -510,9 +509,6 @@ AC_CONFIG_FILES([
         docs/info/Makefile
 
 	src/Makefile
-
-	site/Makefile
-	site/in/Makefile
 
 	tools/Makefile
 	tools/maint/Makefile

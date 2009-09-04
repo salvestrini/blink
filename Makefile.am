@@ -25,8 +25,7 @@ ACLOCAL_AMFLAGS = -I tools/autotools/m4
 SUBDIRS =					\
 	tools					\
 	src					\
-	docs					\
-	site
+	docs
 
 ##
 ## NOTE:
@@ -193,9 +192,6 @@ announcement:
 	  --curr=$(PACKAGE_VERSION)		\
 	  --gpg-key-id=TEST			\
 	  --url-dir=TEST
-
-site: all
-	(cd site && $(MAKE) $(AM_MAKEFLAGS) site)
 
 update-local: Makefile
 
