@@ -51,6 +51,7 @@ AM_INIT_AUTOMAKE([1.10 foreign nostdinc std-options -Wall])
 AC_PROG_GREP
 AC_PROG_SED
 
+AX_PATH_MISSING([PERL],             [perl])
 AX_PATH_MISSING([WGET],             [wget])
 AX_PATH_MISSING([DNT],              [dnt])
 AX_PATH_MISSING([DEVTODO_TO_DNT],   [devtodo-to-dnt])
@@ -81,15 +82,6 @@ AC_SUBST(AX_PACKAGE_MICRO,$AX_POINT_VERSION)
 #     Some of them (perl, python) are maintainer related, don't remove those
 #     checks ...
 #
-AC_ARG_VAR(PERL, [Full path to the 'perl' executable])
-AX_PATH_MISSING([PERL],[perl],[perl seems missing ...])
-
-AC_ARG_VAR(PYTHON, [Full path to the 'python' executable])
-AX_PATH_MISSING([PYTHON],[python],[python seems missing ...])
-
-AC_ARG_VAR(NM, [Full path to the 'nm' executable])
-AX_PATH_MISSING([NM],[nm],[nm seems missing ...])
-
 AC_PROG_INSTALL
 AC_PROG_MKDIR_P
 
