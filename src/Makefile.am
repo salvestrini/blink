@@ -137,7 +137,7 @@ map: Makefile $(bin_PROGRAMS)
 ##
 update-local: Makefile
 
-maintainer-check-whitespaces: Makefile
+maintainer-check-whitespaces: Makefile $(blink_SOURCES)
 	$(WHITESPACE_DETECT) $(blink_SOURCES)
 
 maintainer-check-local: Makefile maintainer-check-whitespaces
