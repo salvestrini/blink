@@ -60,6 +60,7 @@ AX_PATH_MISSING([DEVTODO_TO_DNT],   [devtodo-to-dnt])
 
 AX_PATH_MISSING([BFD_SECTION_STAT], [bfd-section-stat])
 
+AX_SPLIT_VERSION($PACKAGE_VERSION, AX_MAJOR_VERSION, AX_MINOR_VERSION, AX_MICRO_VERSION, AX_EXTRA_VERSION)
 #
 # The API version is the base version.  We must guarantee
 # compatibility for all releases with the same API version.
@@ -71,11 +72,8 @@ AX_PATH_MISSING([BFD_SECTION_STAT], [bfd-section-stat])
 # * Prereleases on the trunk are all incompatible -- 1.5.1 and 1.5.2
 #   aren't the same.
 #
-AX_SPLIT_VERSION($PACKAGE_VERSION)
 API_VERSION="${AX_MAJOR_VERSION}.${AX_MINOR_VERSION}"
-AC_SUBST(AX_PACKAGE_MAJOR,$AX_MAJOR_VERSION)
-AC_SUBST(AX_PACKAGE_MINOR,$AX_MINOR_VERSION)
-AC_SUBST(AX_PACKAGE_MICRO,$AX_POINT_VERSION)
+AC_SUBST(API_VERSION)
 
 # Gather supported flags while checking programs and their features
 AX_CONFIG_CPPFLAGS=""
