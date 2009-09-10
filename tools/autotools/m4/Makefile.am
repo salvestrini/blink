@@ -43,6 +43,7 @@ EXTERNAL =					\
 	$(URL_AA)/ax_ld_check_flag.m4
 
 INTERNAL =					\
+	gnulib-cache.m4				\
 	ax_arg_with.m4				\
 	ax_asm_uscore.m4			\
 	ax_blacklist_version.m4			\
