@@ -121,18 +121,6 @@ stats:
 	@$(BFD_SECTION_STAT) -- $(bin_PROGRAMS) || exit 1
 
 ##
-## map related
-##
-MAPFILE = system.map
-CLEANFILES += $(MAPFILE)
-map: Makefile $(bin_PROGRAMS)
-	$(NM) -a $(bin_PROGRAMS) > $(MAPFILE) || { \
-		rm -f $(MAPFILE) ; \
-		exit 1 ; \
-	}
-
-
-##
 ## Maintainer related targets
 ##
 update-local: Makefile
