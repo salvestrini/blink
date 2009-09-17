@@ -285,7 +285,7 @@ static int dl_resolve_symbols(dl_t       mod,
 
                 switch (type) {
                         case STT_NOTYPE:
-                                /* Resolve a global symbol.  */
+                                /* Resolve a global symbol */
                                 if (sym->st_name != 0 && sym->st_shndx == 0) {
                                         sym->st_value = (Elf_Addr) dl_resolve_symbol(name);
                                         if (!sym->st_value)
