@@ -36,6 +36,7 @@ Makefile
 /tools/maint/whitespace-detect
 /tools/maint/gitlog-to-committers
 /tools/maint/gittag-to-date
+/tools/maint/guards-check
 
 /tools/autotools/compile
 /tools/autotools/config.guess

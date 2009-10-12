@@ -128,4 +128,7 @@ update-local: Makefile
 maintainer-check-whitespaces: Makefile $(blink_SOURCES)
 	$(WHITESPACE_DETECT) $(blink_SOURCES)
 
-maintainer-check-local: Makefile maintainer-check-whitespaces
+maintainer-check-guards: Makefile $(blink_SOURCES)
+	$(GUARDS_CHECK) $(blink_SOURCES)
+
+maintainer-check-local: Makefile maintainer-check-guards maintainer-check-whitespaces
