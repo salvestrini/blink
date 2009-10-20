@@ -60,19 +60,8 @@ AX_PATH_MISSING([DNT],              [dnt])
 
 
 AX_SPLIT_VERSION($PACKAGE_VERSION, AX_MAJOR_VERSION, AX_MINOR_VERSION, AX_MICRO_VERSION, AX_EXTRA_VERSION)
-#
-# The API version is the base version.  We must guarantee
-# compatibility for all releases with the same API version.
-# Our current rule is that:
-#
-# * All releases, including the prereleases, in an X.Y series
-#   are compatible.  So 1.5.1 is compatible with 1.5.
-#
-# * Prereleases on the trunk are all incompatible -- 1.5.1 and 1.5.2
-#   aren't the same.
-#
-API_VERSION="${AX_MAJOR_VERSION}.${AX_MINOR_VERSION}"
-AC_SUBST(API_VERSION)
+
+AC_SUBST([PACKAGE_API],[${AX_MAJOR_VERSION}"."${AX_MINOR_VERSION}])
 
 # Gather supported flags while checking programs and their features
 AX_CONFIG_CPPFLAGS=""
@@ -514,7 +503,7 @@ AC_OUTPUT
 # Header
 cat <<EOF
 
-  ${PACKAGE_NAME} ${API_VERSION} (${PACKAGE_VERSION}) configuration summary
+  ${PACKAGE_NAME} ${PACKAGE_API} (${PACKAGE_VERSION}) configuration summary
 
 EOF
 
