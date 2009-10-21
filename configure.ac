@@ -60,7 +60,6 @@ AX_PATH_MISSING([DNT],              [dnt])
 
 
 AX_SPLIT_VERSION($PACKAGE_VERSION, AX_MAJOR_VERSION, AX_MINOR_VERSION, AX_MICRO_VERSION, AX_EXTRA_VERSION)
-
 AC_SUBST([PACKAGE_API],[${AX_MAJOR_VERSION}"."${AX_MINOR_VERSION}])
 
 # Gather supported flags while checking programs and their features
