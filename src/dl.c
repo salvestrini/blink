@@ -287,7 +287,9 @@ static int dl_resolve_symbols(dl_t       mod,
                         case STT_NOTYPE:
                                 /* Resolve a global symbol */
                                 if (sym->st_name != 0 && sym->st_shndx == 0) {
-                                        sym->st_value = (Elf_Addr) dl_resolve_symbol(name);
+                                        sym->st_value =
+                                                (Elf_Addr)
+                                                dl_resolve_symbol(name);
                                         if (!sym->st_value)
                                                 printf("Cannot find symbol "
                                                        "`%s'\n", name);
@@ -298,11 +300,13 @@ static int dl_resolve_symbols(dl_t       mod,
                                 break;
 
                         case STT_OBJECT:
-                                sym->st_value += (Elf_Addr) dl_get_section_addr(mod,
-                                                                                sym->st_shndx);
+                                sym->st_value +=
+                                        (Elf_Addr)
+                                        dl_get_section_addr(mod,sym->st_shndx);
                                 if (bind != STB_LOCAL) {
                                         if (dl_register_symbol(name,
-                                                               (void *) sym->st_value,
+                                                               (void *)
+                                                               sym->st_value,
                                                                mod)) {
                                                 return 0;
                                         }
@@ -310,11 +314,14 @@ static int dl_resolve_symbols(dl_t       mod,
                                 break;
 
                         case STT_FUNC:
-                                sym->st_value += (Elf_Addr) dl_get_section_addr(mod,
-                                                                                sym->st_shndx);
+                                sym->st_value +=
+                                        (Elf_Addr)
+                                        dl_get_section_addr(mod,
+                                                            sym->st_shndx);
                                 if (bind != STB_LOCAL) {
                                         if (dl_register_symbol(name,
-                                                               (void *) sym->st_value,
+                                                               (void *)
+                                                               sym->st_value,
                                                                mod)) {
                                                 return 0;
                                         }
@@ -322,8 +329,10 @@ static int dl_resolve_symbols(dl_t       mod,
                                 break;
 
                         case STT_SECTION:
-                                sym->st_value = (Elf_Addr) dl_get_section_addr(mod,
-                                                                               sym->st_shndx);
+                                sym->st_value =
+                                        (Elf_Addr)
+                                        dl_get_section_addr(mod,
+                                                            sym->st_shndx);
                                 break;
 
                         case STT_FILE:

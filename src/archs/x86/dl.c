@@ -99,8 +99,9 @@ int arch_dl_relocate_symbols(dl_t   mod,
 
                                 addr = (Elf32_Word *) ((char *) seg->addr +
                                                        rel->r_offset);
-                                sym  = (Elf32_Sym *) ((char *) symtab +
-                                                      entsize * ELF32_R_SYM(rel->r_info));
+                                sym  = (Elf32_Sym *)
+                                        ((char *) symtab +
+                                         entsize * ELF32_R_SYM(rel->r_info));
 
                                 switch (ELF32_R_TYPE(rel->r_info)) {
                                         case R_386_32:
@@ -108,9 +109,10 @@ int arch_dl_relocate_symbols(dl_t   mod,
                                                 break;
 
                                         case R_386_PC32:
-                                                *addr += (sym->st_value -
-                                                          (Elf32_Word) seg->addr -
-                                                          rel->r_offset);
+                                                *addr +=(sym->st_value -
+                                                         (Elf32_Word)
+                                                         seg->addr -
+                                                         rel->r_offset);
                                                 break;
                                         default:
                                                 assert(0);
