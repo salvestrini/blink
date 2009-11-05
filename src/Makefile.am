@@ -128,7 +128,13 @@ update-local: Makefile
 maintainer-check-whitespaces: Makefile $(blink_SOURCES)
 	$(WHITESPACE_DETECT) $(blink_SOURCES)
 
+maintainer-check-wordwraps: Makefile $(blink_SOURCES)
+	$(WORDWRAP_DETECT) --tab-size 8 --columns 80 $(blink_SOURCES)
+
 maintainer-check-guards: Makefile $(blink_SOURCES)
 	$(GUARDS_CHECK) $(blink_SOURCES)
 
-maintainer-check-local: Makefile maintainer-check-guards maintainer-check-whitespaces
+maintainer-check-local: Makefile		\
+	maintainer-check-guards			\
+	maintainer-check-whitespaces		\
+	maintainer-check-wordwraps
