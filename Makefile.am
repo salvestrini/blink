@@ -46,7 +46,7 @@ AUTOMAKE_OPTIONS = check-news
 ##     Makefile.am included files are automatically distributed by automake
 ##     rules
 ##
-EXTRA_DIST =					\
+EXTRA_DIST +=					\
 	README COPYING INSTALL THANKS		\
 	bootstrap .bootstrap
 
