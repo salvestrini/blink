@@ -77,6 +77,7 @@ WORDWRAP_DETECT      = $(top_builddir)/tools/maint/wordwrap-detect
 WHITESPACE_DETECT    = $(top_builddir)/tools/maint/whitespace-detect
 FETCH                = $(top_builddir)/tools/maint/fetch
 GITTAG_TO_DATE       = $(top_builddir)/tools/maint/gittag-to-date
+RELEASES_TO_NEWS     = $(top_builddir)/tools/maint/releases-to-news
 GITLOG_TO_COMMITTERS = $(top_builddir)/tools/maint/gitlog-to-committers
 GITLOG_TO_CHANGELOG  = $(top_srcdir)/tools/maint/gitlog-to-changelog
 GIT_VERSION_GEN      = $(top_srcdir)/tools/maint/git-version-gen
