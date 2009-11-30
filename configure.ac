@@ -43,7 +43,8 @@ AC_CANONICAL_TARGET
 # file, AUTOMAKE_OPTIONS variable
 #
 #AM_INIT_AUTOMAKE([1.10 foreign no-installman no-installinfo -Wall nostdinc])
-AM_INIT_AUTOMAKE([1.10 foreign nostdinc std-options -Wall color-tests])
+#AM_INIT_AUTOMAKE([1.10 foreign nostdinc std-options -Wall color-tests])
+AM_INIT_AUTOMAKE([1.10 foreign nostdinc -Wall color-tests])
 
 #
 # Checks for needed programs
