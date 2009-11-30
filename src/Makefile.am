@@ -23,12 +23,15 @@ include $(top_srcdir)/Makefile.sub
 AUTOMAKE_OPTIONS = subdir-objects
 
 CLEANFILES =
+EXTRA_DIST =
 
 bin_PROGRAMS = blink
 
 blink_multiboot_x86_SRCS =			\
 	multiboot/x86/crt0.S			\
 	multiboot/x86/crt1.c
+
+EXTRA_DIST += multiboot/x86/linker.ld.in
 
 blink_multiboot_SRCS =				\
 	$(blink_multiboot_x86_SRCS)		\
