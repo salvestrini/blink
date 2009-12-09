@@ -4,7 +4,6 @@ ENTRY(entry_point)
 
 SECTIONS {
 
-	 /* NOTE: CONFIG_LMA and CONFIG_VMA extracted from src/mem/rules.cfg */
 	. = @CONFIG_LMA@;
 
 	_start = .;
