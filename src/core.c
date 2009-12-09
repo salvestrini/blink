@@ -24,7 +24,7 @@
 #include "libc/stdlib.h"
 #include "libc/stdio.h"
 #include "libc/assert.h"
-#include "dl.h"
+#include "dl/dl.h"
 
 void core(dl_list_t dl)
 {

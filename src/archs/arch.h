@@ -24,7 +24,7 @@
 
 #include "config.h"
 #include "libc/stdint.h"
-#include "dl.h"
+#include "dl/dl.h"
 
 void   arch_halt(void);
 void   arch_power_off(void);

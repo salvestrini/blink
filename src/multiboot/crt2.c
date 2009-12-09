@@ -28,9 +28,9 @@
 #include "libc/stdlib.h"
 #include "libbfd/bfd.h"
 #include "multiboot/multiboot.h"
-#include "heap.h"
-#include "dl.h"
-#include "mem.h"
+#include "dl/dl.h"
+#include "mem/heap.h"
+#include "mem/mem.h"
 #include "core.h"
 #include "constants.h"
 

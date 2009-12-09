@@ -23,7 +23,7 @@
 #include "libc/stddef.h"
 #include "libc/assert.h"
 #include "libbfd/elf-format.h"
-#include "dl.h"
+#include "dl/dl.h"
 
 int arch_dl_check_header(void * ehdr)
 {
