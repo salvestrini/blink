@@ -32,7 +32,6 @@
 #include "mem/heap.h"
 #include "mem/mem.h"
 #include "core.h"
-#include "constants.h"
 
 #define CHECK_FLAG(FLAGS,BIT) ((FLAGS) & (1 << (BIT)))
 
@@ -216,8 +215,9 @@ void crt2(multiboot_info_t * mbi)
                 panic("Cannot detect heap base");
         }
 
+        /* XXX FIXME: Move the following code to an arch-dependant place */
         /* Look for heap size */
-        if (heap_base < 1 * MB) {
+        if (heap_base < 1 * 1024 * 1024) {
                 /* Consider lower memory */
         } else {
                 /* Consider only upper memory */
