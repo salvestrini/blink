@@ -54,9 +54,18 @@ blink_archs_SRCS =				\
 	archs/arch.h				\
 	archs/asm.h
 
+blink_elf_SRCS =				\
+	elf/elf.h				\
+	elf/elf.c				\
+	elf/elf32.h				\
+	elf/elf32.c				\
+	elf/elf64.h				\
+	elf/elf64.c
+
 blink_SOURCES =					\
 	$(blink_multiboot_SRCS)			\
 	$(blink_archs_SRCS)			\
+	$(blink_elf_SRCS)			\
 	heap.c					\
 	heap.h					\
 	panic.c					\
