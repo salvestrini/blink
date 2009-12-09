@@ -19,10 +19,10 @@
  *
  */
 
-#ifndef MEM_H
-#define MEM_H
+#ifndef MEM_MEM_H
+#define MEM_MEM_H
 
 void * xmalloc(size_t size);
 void   xfree(void * ptr);
 
-#endif /* MEM_H */
+#endif /* MEM_MEM_H */

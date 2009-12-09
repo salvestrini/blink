@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef DL_H
-#define DL_H
+#ifndef DL_DL_H
+#define DL_DL_H
 
 struct dl_segment {
         struct dl_segment * next;
@@ -48,4 +48,4 @@ typedef struct dl_list * dl_list_t;
 int  dl_load(void * addr,
              size_t size);
 
-#endif /* DL_H */
+#endif /* DL_DL_H */

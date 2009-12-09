@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef CORE_MEM_HEAP_H
-#define CORE_MEM_HEAP_H
+#ifndef MEM_HEAP_H
+#define MEM_HEAP_H
 
 #include "config.h"
 #include "libc/stdint.h"
@@ -32,4 +32,4 @@ void * heap_alloc(size_t size);
 void   heap_free(void * ptr);
 void   heap_fini(void);
 
-#endif /* CORE_MEM_HEAP_H */
+#endif /* MEM_HEAP_H */
