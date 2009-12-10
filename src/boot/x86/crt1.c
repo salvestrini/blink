@@ -27,8 +27,8 @@
 #include "libc/string.h"
 #include "libc/ctype.h"
 #include "libc/assert.h"
-#include "multiboot/multiboot.h"
 #include "archs/x86/stdio.h"
+#include "boot/multiboot.h"
 
 /*
  * CR0 flags

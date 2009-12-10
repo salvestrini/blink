@@ -27,16 +27,16 @@ EXTRA_DIST =
 
 bin_PROGRAMS = blink
 
-blink_multiboot_x86_SRCS =			\
-	multiboot/x86/crt0.S			\
-	multiboot/x86/crt1.c
+blink_boot_x86_SRCS =				\
+	boot/x86/crt0.S				\
+	boot/x86/crt1.c
 
-EXTRA_DIST += multiboot/x86/linker.ld.in
+EXTRA_DIST += boot/x86/linker.ld.in
 
-blink_multiboot_SRCS =				\
-	$(blink_multiboot_x86_SRCS)		\
-	multiboot/crt2.c			\
-	multiboot/multiboot.h
+blink_boot_SRCS =				\
+	$(blink_boot_x86_SRCS)			\
+	boot/crt2.c				\
+	boot/multiboot.h
 
 blink_archs_x86_SRCS =				\
 	archs/x86/vga.c				\
@@ -52,7 +52,8 @@ blink_archs_x86_SRCS =				\
 blink_archs_SRCS =				\
 	$(blink_archs_x86_SRCS)			\
 	archs/arch.h				\
-	archs/asm.h
+	archs/asm.h				\
+	archs/panic.c
 
 blink_dl_SRCS =					\
 	dl/dl.c					\
@@ -71,20 +72,19 @@ blink_mem_SRCS =				\
 	mem/mem.h
 
 blink_SOURCES =					\
-	$(blink_multiboot_SRCS)			\
+	$(blink_boot_SRCS)			\
 	$(blink_archs_SRCS)			\
 	$(blink_mem_SRCS)			\
 	$(blink_dl_SRCS)			\
-	panic.c					\
 	core.c					\
 	core.h
 
-LDSCRIPT = $(top_builddir)/src/multiboot/$(architecture)/linker.ld
-$(top_builddir)/src/multiboot/$(architecture)/linker.ld: Makefile $(top_srcdir)/src/multiboot/$(architecture)/linker.ld.in
+LDSCRIPT = $(top_builddir)/src/boot/$(architecture)/linker.ld
+$(top_builddir)/src/boot/$(architecture)/linker.ld: Makefile $(top_srcdir)/src/boot/$(architecture)/linker.ld.in
 	( rm -f $@ $@.tmp && \
 	  $(SED) -e 's,[@]CONFIG_LMA[@],'$(CONFIG_LMA)',g' \
 		 -e 's,[@]CONFIG_VMA[@],'$(CONFIG_VMA)',g' \
-	  < $(top_srcdir)/src/multiboot/$(architecture)/linker.ld.in > $@.tmp && \
+	  < $(top_srcdir)/src/boot/$(architecture)/linker.ld.in > $@.tmp && \
 	  chmod -x $@.tmp && \
 	  chmod a-w $@.tmp && \
 	  mv -f $@.tmp $@ ) || { \

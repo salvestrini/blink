@@ -28,7 +28,7 @@ Makefile
 /src/config.h
 /src/config.h.in
 /src/stamp-h1
-/src/multiboot/x86/linker.ld
+/src/boot/x86/linker.ld
 
 /docs/info/blink.info
 

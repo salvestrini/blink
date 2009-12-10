@@ -40,6 +40,8 @@ void core(dl_list_t dl)
                PACKAGE_URL);
         printf("\n");
 
+	/* Call kernel_preload() if available in kernel image */
+
         /* Perform linking using dl information */
 
         /* Jump to the entry point */

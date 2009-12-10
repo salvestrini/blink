@@ -27,7 +27,7 @@
 #include "libc/assert.h"
 #include "libc/stdlib.h"
 #include "libbfd/bfd.h"
-#include "multiboot/multiboot.h"
+#include "boot/multiboot.h"
 #include "dl/dl.h"
 #include "mem/heap.h"
 #include "mem/mem.h"
