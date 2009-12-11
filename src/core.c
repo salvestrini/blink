@@ -24,12 +24,36 @@
 #include "libc/stdlib.h"
 #include "libc/stdio.h"
 #include "libc/assert.h"
-#include "dl/dl.h"
 
-void core(dl_list_t dl)
+int load_elf_image(const char *     name,
+                   unsigned long ** entry,
+                   void *           buffer)
 {
-        assert(dl);
+        assert(name);
+        assert(entry);
+        assert(buffer);
 
+#if 0
+        if (!elf_check_file((struct Elf32_Header *) buffer)) {
+                printf("Image '%s' is not a valid elf image\n", name);
+                return 0;
+        }
+
+        ** entry = (unsigned long)
+                elf_get_entry_point((struct Elf32_Header *) buffer);
+
+        printf("Image '%s' entry point: 0x%lx\n", name, **entry);
+
+        if (!elf_loadFile(buffer, 1)) {
+                return 0;
+        }
+#endif
+
+        return 1;
+}
+
+void core()
+{
         printf("%s version %s running ...\n",
                PACKAGE_NAME, PACKAGE_VERSION);
         printf("(C) 2008, 2009 Francesco Salvestrini\n");
@@ -40,6 +64,12 @@ void core(dl_list_t dl)
                PACKAGE_URL);
         printf("\n");
 
+        /* Load kernel image */
+#if 0
+        if (!load_elf_image("kernel", ,)) {
+                panic("Cannot load elf image");
+        }
+#endif
         /* Call kernel_preload() if available in kernel image */
 
         /* Perform linking using dl information */

@@ -46,8 +46,7 @@ blink_archs_x86_SRCS =				\
 	archs/x86/power.c			\
 	archs/x86/port.c			\
 	archs/x86/port.h			\
-	archs/x86/backtrace.c			\
-	archs/x86/dl.c
+	archs/x86/backtrace.c
 
 blink_archs_SRCS =				\
 	$(blink_archs_x86_SRCS)			\
@@ -55,15 +54,13 @@ blink_archs_SRCS =				\
 	archs/asm.h				\
 	archs/panic.c
 
-blink_dl_SRCS =					\
-	dl/dl.c					\
-	dl/dl.h					\
-	dl/elf/elf.h				\
-	dl/elf/elf.c				\
-	dl/elf/elf32.h				\
-	dl/elf/elf32.c				\
-	dl/elf/elf64.h				\
-	dl/elf/elf64.c
+blink_elf_SRCS =				\
+	elf/elf.h				\
+	elf/elf.c				\
+	elf/elf32.h				\
+	elf/elf32.c				\
+	elf/elf64.h				\
+	elf/elf64.c
 
 blink_mem_SRCS =				\
 	mem/heap.c				\
@@ -75,7 +72,7 @@ blink_SOURCES =					\
 	$(blink_boot_SRCS)			\
 	$(blink_archs_SRCS)			\
 	$(blink_mem_SRCS)			\
-	$(blink_dl_SRCS)			\
+	$(blink_elf_SRCS)			\
 	core.c					\
 	core.h
 

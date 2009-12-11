@@ -28,13 +28,13 @@
 #include "libc/stdlib.h"
 #include "libbfd/bfd.h"
 #include "boot/multiboot.h"
-#include "dl/dl.h"
 #include "mem/heap.h"
 #include "mem/mem.h"
 #include "core.h"
 
 #define CHECK_FLAG(FLAGS,BIT) ((FLAGS) & (1 << (BIT)))
 
+#if 0
 static void fill_dl(multiboot_info_t * mbi,
                     dl_list_t *        dl)
 {
@@ -61,6 +61,7 @@ static void fill_dl(multiboot_info_t * mbi,
                         mod->mod_end - mod->mod_start + 1);
         }
 }
+#endif
 
 static int scan_modules(multiboot_info_t * mbi,
                         uint_t *           base)
@@ -238,11 +239,13 @@ void crt2(multiboot_info_t * mbi)
          * From this point on we are allowed to use malloc() and free() ...
          */
 
+#if 0
         /* Move interesting information inside dl data */
         dl_list_t dl;
         dl = (dl_list_t) xmalloc(sizeof(dl_list_t));
         fill_dl(mbi, &dl);
+#endif
 
         /* Call main program */
-        core(dl);
+        core();
 }

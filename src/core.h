@@ -23,8 +23,7 @@
 #define CORE_H
 
 #include "config.h"
-#include "dl/dl.h"
 
-void core(dl_list_t dl);
+void core();
 
-#endif /* CORE_H */
+#endif
