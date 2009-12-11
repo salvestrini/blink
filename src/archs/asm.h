@@ -30,4 +30,4 @@
 # define EXT_C(sym) sym
 #endif
 
-#endif /* ARCHS_ASM_H */
+#endif
