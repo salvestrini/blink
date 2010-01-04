@@ -21,20 +21,25 @@
 
 #include "config.h"
 #include "elklib.h"
+#include "libc/stddef.h"
 #include "libc/stdlib.h"
 #include "libc/stdio.h"
 #include "libc/assert.h"
+#include "core.h"
 
-int load_elf_image(const char *     name,
-                   unsigned long ** entry,
-                   void *           buffer)
+int load_elf_image(image_t * image)
 {
+        assert(image);
+        assert(image->name);
+
+        printf("Loading image `%s'\n", image->name);
+
+#if 0
         assert(name);
         assert(entry);
         assert(buffer);
 
-#if 0
-        if (!elf_check_file((struct Elf32_Header *) buffer)) {
+        if (!elf_check_buffer((struct Elf32_Header *) buffer)) {
                 printf("Image '%s' is not a valid elf image\n", name);
                 return 0;
         }
@@ -44,7 +49,7 @@ int load_elf_image(const char *     name,
 
         printf("Image '%s' entry point: 0x%lx\n", name, **entry);
 
-        if (!elf_loadFile(buffer, 1)) {
+        if (!elf_load_buffer(buffer, 1)) {
                 return 0;
         }
 #endif
@@ -52,24 +57,25 @@ int load_elf_image(const char *     name,
         return 1;
 }
 
-void core()
+void core(image_t * images)
 {
-        printf("%s version %s running ...\n",
-               PACKAGE_NAME, PACKAGE_VERSION);
+        assert(images);
+
+        printf("%s version %s running ...\n", PACKAGE_NAME, PACKAGE_VERSION);
         printf("(C) 2008, 2009 Francesco Salvestrini\n");
         printf("\n");
-        printf("Please report bugs to <%s>\n",
-               PACKAGE_BUGREPORT);
-        printf("Visit %s for updates\n",
-               PACKAGE_URL);
+        printf("Please report bugs to <%s>\n", PACKAGE_BUGREPORT);
+        printf("Visit %s for updates\n", PACKAGE_URL);
         printf("\n");
 
         /* Load kernel image */
-#if 0
-        if (!load_elf_image("kernel", ,)) {
-                panic("Cannot load elf image");
+
+        image_t * p;
+
+        for (p = images; p != NULL; p = p->next) {
+                load_elf_image(p);
         }
-#endif
+
         /* Call kernel_preload() if available in kernel image */
 
         /* Perform linking using dl information */

@@ -24,6 +24,11 @@
 
 #include "config.h"
 
-void core();
+typedef struct image {
+        const char *   name;
+        struct image * next;
+} image_t;
+
+void core(image_t * images);
 
 #endif

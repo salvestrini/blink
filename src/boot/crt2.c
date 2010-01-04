@@ -34,6 +34,10 @@
 
 #define CHECK_FLAG(FLAGS,BIT) ((FLAGS) & (1 << (BIT)))
 
+#define MAX_IMAGES_COUNT 64
+
+image_t images[MAX_IMAGES_COUNT];
+
 #if 0
 static void fill_dl(multiboot_info_t * mbi,
                     dl_list_t *        dl)
@@ -247,5 +251,5 @@ void crt2(multiboot_info_t * mbi)
 #endif
 
         /* Call main program */
-        core();
+        core(images);
 }
