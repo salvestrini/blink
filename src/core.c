@@ -25,9 +25,11 @@
 #include "libc/stdlib.h"
 #include "libc/stdio.h"
 #include "libc/assert.h"
+#include "libc/string.h"
+#include "archs/arch.h"
 #include "core.h"
 
-int load_elf_image(image_t * image)
+int elf_image_load(image_t * image)
 {
         assert(image);
         assert(image->name);
@@ -57,10 +59,25 @@ int load_elf_image(image_t * image)
         return 1;
 }
 
+static int hanging_mode = 0;
+
+void hang(const char * message)
+{
+        assert(message);
+
+        printf(message);
+        switch (hanging_mode) {
+                case 0: arch_halt();      break;
+                case 1: arch_power_off(); break;
+                case 2: arch_reset();     break;
+                default:                  break;
+        }
+
+        panic("We couldn't hang as supposed ...");
+}
+
 void core(image_t * images)
 {
-        assert(images);
-
         printf("%s version %s running ...\n", PACKAGE_NAME, PACKAGE_VERSION);
         printf("(C) 2008, 2009 Francesco Salvestrini\n");
         printf("\n");
@@ -69,19 +86,21 @@ void core(image_t * images)
         printf("\n");
 
         /* Load kernel image */
-
         image_t * p;
-
         for (p = images; p != NULL; p = p->next) {
-                load_elf_image(p);
+                if (!strcmp(p->name, "kernel")) {
+                        if (!elf_image_load(p)) {
+                                hang("Couldn't load kernel image");
+                        }
+
+                        /* Call kernel_preload() if available */
+                }
         }
 
-        /* Call kernel_preload() if available in kernel image */
-
-        /* Perform linking using dl information */
+        /* Perform linking using available information */
 
         /* Jump to the entry point */
 
         /* Argh, we shouldn't have reached this point ... */
-        panic("Cannot jump to the entry point");
+        hang("Cannot jump to the entry point");
 }
