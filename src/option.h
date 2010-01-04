@@ -19,30 +19,12 @@
  *
  */
 
+#ifndef OPTION_H
+#define OPTION_H
+
 #include "config.h"
-#include "elklib.h"
-#include "libc/stddef.h"
-#include "libc/stdlib.h"
-#include "libc/stdio.h"
-#include "libc/assert.h"
-#include "libc/string.h"
-#include "archs/arch.h"
-#include "option.h"
 
-OPTION(hanging_mode, int, 0);
+#define OPTION(NAME,TYPE,DEFAULT_VALUE) \
+        static TYPE NAME = DEFAULT_VALUE
 
-void hang(const char * message)
-{
-        if (message) {
-                printf(message);
-        }
-
-        switch (hanging_mode) {
-                case 0:  arch_halt();      break;
-                case 1:  arch_power_off(); break;
-                case 2:  arch_reset();     break;
-                default:                   break;
-        }
-
-        panic("We couldn't hang as supposed ...");
-}
+#endif
