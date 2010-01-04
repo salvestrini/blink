@@ -32,9 +32,10 @@ static int hanging_mode = 0;
 
 void hang(const char * message)
 {
-        assert(message);
+        if (message) {
+                printf(message);
+        }
 
-        printf(message);
         switch (hanging_mode) {
                 case 0: arch_halt();      break;
                 case 1: arch_power_off(); break;
