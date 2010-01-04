@@ -30,9 +30,6 @@ $(top_srcdir)/.version:
 dist-hook-version:
 	echo $(VERSION) > $(distdir)/.tarball-version
 
-DNT_BIN = $(DNT)
-DNT_DB  = $(top_srcdir)/.dnt.db
-
 EXTRA_DIST += $(DNT_DB) AUTHORS.in
 
 TODO: $(DNT_DB)
