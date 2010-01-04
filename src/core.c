@@ -27,6 +27,7 @@
 #include "libc/assert.h"
 #include "libc/string.h"
 #include "archs/arch.h"
+#include "misc.h"
 #include "core.h"
 
 int elf_image_load(image_t * image)
@@ -57,23 +58,6 @@ int elf_image_load(image_t * image)
 #endif
 
         return 1;
-}
-
-static int hanging_mode = 0;
-
-void hang(const char * message)
-{
-        assert(message);
-
-        printf(message);
-        switch (hanging_mode) {
-                case 0: arch_halt();      break;
-                case 1: arch_power_off(); break;
-                case 2: arch_reset();     break;
-                default:                  break;
-        }
-
-        panic("We couldn't hang as supposed ...");
 }
 
 void core(image_t * images)

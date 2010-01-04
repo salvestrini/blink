@@ -73,6 +73,8 @@ blink_SOURCES =					\
 	$(blink_archs_SRCS)			\
 	$(blink_mem_SRCS)			\
 	$(blink_elf_SRCS)			\
+	misc.c					\
+	misc.h					\
 	core.c					\
 	core.h
 
