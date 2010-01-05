@@ -38,10 +38,10 @@ void hang(const char * message)
         }
 
         switch (hanging_mode) {
+                default:
                 case 0:  arch_halt();      break;
                 case 1:  arch_power_off(); break;
                 case 2:  arch_reset();     break;
-                default:                   break;
         }
 
         panic("We couldn't hang as supposed ...");

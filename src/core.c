@@ -35,7 +35,7 @@ int elf_image_load(image_t * image)
         assert(image);
         assert(image->name);
 
-        printf("Loading image `%s'\n", image->name);
+        printf("Loading image '%s'\n", image->name);
 
 #if 0
         assert(name);
@@ -67,6 +67,13 @@ void * elf_symbol_lookup(image_t *    image,
         assert(symbol);
 
         return NULL;
+}
+
+int elf_images_link(image_t * images)
+{
+        assert(images);
+
+        return 1;
 }
 
 void core(image_t * images)
@@ -108,11 +115,10 @@ void core(image_t * images)
                 hang("Cannot find a valid kernel image");
         }
 
-
-        /*
-         * Perform linking over all available images, using available
-         * information
-         */
+        /* Perform linking over all available images */
+        if (!elf_images_link(images)) {
+                hang("Cannot perform linking");
+        }
 
         /* Jump to the entry point */
         int (* kernel_main)(void);
