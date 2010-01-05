@@ -60,6 +60,15 @@ int elf_image_load(image_t * image)
         return 1;
 }
 
+void * elf_symbol_lookup(image_t *    image,
+                         const char * symbol)
+{
+        assert(image);
+        assert(symbol);
+
+        return NULL;
+}
+
 void core(image_t * images)
 {
         printf("%s version %s running ...\n", PACKAGE_NAME, PACKAGE_VERSION);
@@ -70,20 +79,49 @@ void core(image_t * images)
         printf("\n");
 
         /* Load kernel image */
+        image_t * kernel;
         image_t * p;
+
+        kernel = NULL;
         for (p = images; p != NULL; p = p->next) {
                 if (!strcmp(p->name, "kernel")) {
+                        /* We got the kernel image */
                         if (!elf_image_load(p)) {
                                 hang("Couldn't load kernel image");
                         }
 
+                        kernel = p;
+
                         /* Call kernel_preload() if available */
+                        int (* kernel_preload)(void);
+                        kernel_preload = elf_symbol_lookup(kernel,
+                                                           "kernel_preload");
+                        if (kernel_preload) {
+                                if (!kernel_preload()) {
+                                        hang("Cannot preload kernel image");
+                                }
+                        }
                 }
         }
 
-        /* Perform linking using available information */
+        if (!kernel) {
+                hang("Cannot find a valid kernel image");
+        }
+
+
+        /*
+         * Perform linking over all available images, using available
+         * information
+         */
 
         /* Jump to the entry point */
+        int (* kernel_main)(void);
+        kernel_main = elf_symbol_lookup(kernel, "main");
+
+        if (!kernel_main) {
+                hang("Cannot find kernel entry point");
+        }
+        kernel_main();
 
         /* Argh, we shouldn't have reached this point ... */
         hang("Cannot jump to the entry point");
