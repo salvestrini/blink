@@ -60,8 +60,8 @@ int elf_image_load(image_t * image)
         return 1;
 }
 
-void * elf_symbol_lookup(image_t *    image,
-                         const char * symbol)
+void * elf_image_symbol_lookup(image_t *    image,
+                               const char * symbol)
 {
         assert(image);
         assert(symbol);
@@ -72,6 +72,16 @@ void * elf_symbol_lookup(image_t *    image,
 int elf_images_link(image_t * images)
 {
         assert(images);
+
+        /* XXX FIXME: This procedure is a shame, please use a better one ! */
+
+        image_t * p;
+        for (p = images; p != NULL; p = p->next) {
+                image_t * q;
+
+                for (q = images; q != NULL; q = q->next) {
+                }
+        }
 
         return 1;
 }
@@ -101,8 +111,9 @@ void core(image_t * images)
 
                         /* Call kernel_preload() if available */
                         int (* kernel_preload)(void);
-                        kernel_preload = elf_symbol_lookup(kernel,
-                                                           "kernel_preload");
+                        kernel_preload =
+                                elf_image_symbol_lookup(kernel,
+                                                        "kernel_preload");
                         if (kernel_preload) {
                                 if (!kernel_preload()) {
                                         hang("Cannot preload kernel image");
@@ -122,7 +133,7 @@ void core(image_t * images)
 
         /* Jump to the entry point */
         int (* kernel_main)(void);
-        kernel_main = elf_symbol_lookup(kernel, "main");
+        kernel_main = elf_image_symbol_lookup(kernel, "main");
 
         if (!kernel_main) {
                 hang("Cannot find kernel entry point");
