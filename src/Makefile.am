@@ -73,6 +73,8 @@ blink_SOURCES =					\
 	$(blink_archs_SRCS)			\
 	$(blink_mem_SRCS)			\
 	$(blink_elf_SRCS)			\
+	log.c					\
+	log.h					\
 	misc.c					\
 	misc.h					\
 	option.c				\
