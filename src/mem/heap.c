@@ -25,10 +25,9 @@
 #include "libc/stddef.h"
 #include "libc/assert.h"
 #include "heap.h"
+#include "log.h"
 
 #define CONFIG_PAGE_SIZE 4096
-
-#define BANNER          "heap: "
 
 #define CONFIG_DEBUG_HEAP           0
 #define CONFIG_DEBUG_HEAP_NOISY     0
@@ -36,7 +35,7 @@
 #define CONFIG_DEBUG_HEAP_SIGNATURE 0
 
 #if CONFIG_DEBUG_HEAP
-#define dprintf(F,A...) printf(BANNER F,##A)
+#define dprintf(F,A...) log(F,##A)
 #else
 #define dprintf(F,A...)
 #endif

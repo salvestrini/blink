@@ -22,7 +22,6 @@
 #include "config.h"
 #include "libc/assert.h"
 #include "libc/stdint.h"
-#include "libc/stdio.h"
 #include "libc/stdarg.h"
 #include "libc/unistd.h"
 #include "libbfd/bfd.h"
@@ -30,6 +29,7 @@
 #include "libcompiler/demangle.h"
 #include "libbfd/elf-format.h"
 #include "archs/arch.h"
+#include "log.h"
 
 #define DEMANGLE          0
 #define MAX_STACK_LEVELS  32
@@ -52,7 +52,7 @@ void arch_panic(const char * message)
 
         panic_in_progress++;
         if (panic_in_progress > 1) {
-                printf("Panic in progress ...\n");
+                log("Panic already in progress ...");
                 return;
         }
 
@@ -60,7 +60,7 @@ void arch_panic(const char * message)
         if (!message) {
                 message = "EMPTY ???";
         }
-        printf("Kernel panic: %s\n", message);
+        log("Panic: %s", message);
 
 #if DEMANGLE
         frames = arch_backtrace_store(backtrace, MAX_STACK_LEVELS);
@@ -96,16 +96,16 @@ void arch_panic(const char * message)
                         delta = backtrace[i] - (unsigned int) base;
                         if (delta) {
                                 /* Delta is precious ... */
-                                printf("  %p <%s+0x%x>\n",
+                                log("  %p <%s+0x%x>",
                                         base, symbol, delta);
                         } else {
                                 /* Huh ... hang in function call ? */
-                                printf("  %p <%s>\n",
+                                log("  %p <%s>",
                                        base, symbol);
                         }
                 } else {
                         /* Hmm ... No symbol found ??? */
-                        printf("  %p <?>\n", backtrace[i]);
+                        log("  %p <?>", backtrace[i]);
                 }
         }
 #endif
@@ -115,6 +115,6 @@ void arch_panic(const char * message)
         arch_halt();
         arch_reset();
 
-        printf("Cannot halt or reset the hardware ...\n");
+        log("Cannot halt or reset the hardware ...");
         for (;;) { /* hmmmm .... */ }
 }

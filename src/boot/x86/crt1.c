@@ -22,13 +22,13 @@
 #include "config.h"
 #include "elklib.h"
 #include "libc/stdint.h"
-#include "libc/stdio.h"
 #include "libc/stddef.h"
 #include "libc/string.h"
 #include "libc/ctype.h"
 #include "libc/assert.h"
 #include "archs/x86/stdio.h"
 #include "boot/multiboot.h"
+#include "log.h"
 
 /*
  * CR0 flags
@@ -91,22 +91,22 @@ static int check_machine_state(void)
         /* Check CR0 state */
         tmp = cr0_get();
         if (tmp & CR0_PG) {
-                printf("Paging flag already set\n");
+                log("Paging flag already set");
                 return 0;
         }
         if (!(tmp & CR0_PE)) {
-                printf("No protected mode flag set\n");
+                log("No protected mode flag set");
                 return 0;
         }
 
         /* Check eflags state */
         tmp = eflags_get();
         if (tmp & EFLAGS_VM) {
-                printf("Virtual mode flag already set\n");
+                log("Virtual mode flag already set");
                 return 0;
         }
         if (tmp & EFLAGS_IF) {
-                printf("Interrupt flag already set\n");
+                log("Interrupt flag already set");
                 return 0;
         }
 
@@ -135,7 +135,7 @@ void crt1(unsigned long magic,
         FILE_update(stdout, arch_stdio_putchar, NULL, NULL, NULL);
         FILE_update(stderr, arch_stdio_putchar, NULL, NULL, NULL);
 
-        printf("%s booting ...\n", PACKAGE_NAME);
+        log("%s booting ...", PACKAGE_NAME);
 
         /* Am I booted by a Multiboot-compliant boot loader?  */
         if (magic != MULTIBOOT_BOOTLOADER_MAGIC) {

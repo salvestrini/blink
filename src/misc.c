@@ -20,21 +20,17 @@
  */
 
 #include "config.h"
-#include "elklib.h"
-#include "libc/stddef.h"
-#include "libc/stdlib.h"
-#include "libc/stdio.h"
 #include "libc/assert.h"
-#include "libc/string.h"
 #include "archs/arch.h"
 #include "option.h"
+#include "log.h"
 
 OPTION(hanging_mode, int, 0);
 
 void hang(const char * message)
 {
         if (message) {
-                printf(message);
+                log(message);
         }
 
         switch (hanging_mode) {

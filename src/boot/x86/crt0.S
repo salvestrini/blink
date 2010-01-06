@@ -95,7 +95,7 @@ loop:   hlt
         jmp     loop
 
 halt_message:
-        .asciz  "BLink halted ..."
+        .asciz  PACKAGE_NAME ": Halted ..."
 
         /* Our stack area */
         .comm   stack, STACK_SIZE
