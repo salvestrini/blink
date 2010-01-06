@@ -20,45 +20,14 @@
  */
 
 #include "config.h"
-#include "elklib.h"
 #include "libc/stddef.h"
 #include "libc/stdlib.h"
-#include "libc/stdio.h"
 #include "libc/assert.h"
 #include "libc/string.h"
 #include "archs/arch.h"
 #include "misc.h"
 #include "core.h"
-
-int elf_image_load(image_t * image)
-{
-        assert(image);
-        assert(image->name);
-
-        printf("Loading image '%s'\n", image->name);
-
-#if 0
-        assert(name);
-        assert(entry);
-        assert(buffer);
-
-        if (!elf_check_buffer((struct Elf32_Header *) buffer)) {
-                printf("Image '%s' is not a valid elf image\n", name);
-                return 0;
-        }
-
-        ** entry = (unsigned long)
-                elf_get_entry_point((struct Elf32_Header *) buffer);
-
-        printf("Image '%s' entry point: 0x%lx\n", name, **entry);
-
-        if (!elf_load_buffer(buffer, 1)) {
-                return 0;
-        }
-#endif
-
-        return 1;
-}
+#include "log.h"
 
 void * elf_image_symbol_lookup(image_t *    image,
                                const char * symbol)
@@ -88,12 +57,12 @@ int elf_images_link(image_t * images)
 
 void core(image_t * images)
 {
-        printf("%s version %s running ...\n", PACKAGE_NAME, PACKAGE_VERSION);
-        printf("(C) 2008, 2009 Francesco Salvestrini\n");
-        printf("\n");
-        printf("Please report bugs to <%s>\n", PACKAGE_BUGREPORT);
-        printf("Visit %s for updates\n", PACKAGE_URL);
-        printf("\n");
+        log("%s version %s running ...\n", PACKAGE_NAME, PACKAGE_VERSION);
+        log("(C) 2008, 2009 Francesco Salvestrini\n");
+        log("\n");
+        log("Please report bugs to <%s>\n", PACKAGE_BUGREPORT);
+        log("Visit %s for updates\n", PACKAGE_URL);
+        log("\n");
 
         /* Load kernel image */
         image_t * kernel;
@@ -103,17 +72,15 @@ void core(image_t * images)
         for (p = images; p != NULL; p = p->next) {
                 if (!strcmp(p->name, "kernel")) {
                         /* We got the kernel image */
-                        if (!elf_image_load(p)) {
-                                hang("Couldn't load kernel image");
-                        }
-
                         kernel = p;
 
-                        /* Call kernel_preload() if available */
+                        /* Does the image provide a kernel_preload() symbol? */
                         int (* kernel_preload)(void);
                         kernel_preload =
                                 elf_image_symbol_lookup(kernel,
                                                         "kernel_preload");
+
+                        /* Call kernel_preload() if available */
                         if (kernel_preload) {
                                 if (!kernel_preload()) {
                                         hang("Cannot preload kernel image");
@@ -132,14 +99,13 @@ void core(image_t * images)
         }
 
         /* Jump to the entry point */
-        int (* kernel_main)(void);
-        kernel_main = elf_image_symbol_lookup(kernel, "main");
-
-        if (!kernel_main) {
+        int (* kernel_start)(void);
+        kernel_start = elf_image_symbol_lookup(kernel, "kernel_start");
+        if (!kernel_start) {
                 hang("Cannot find kernel entry point");
         }
-        kernel_main();
+        kernel_start();
 
         /* Argh, we shouldn't have reached this point ... */
-        hang("Cannot jump to the entry point");
+        hang("???");
 }
