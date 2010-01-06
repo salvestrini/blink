@@ -25,6 +25,10 @@
 #include "config.h"
 #include "libc/stdio.h"
 
-#define log(FMT, ...) printf(PACKAGE_NAME ": " FMT "\n", ## __VA_ARGS__)
+#define log(FMT, ...) {                         \
+	printf(PACKAGE_NAME ": ");              \
+	printf(FMT, ## __VA_ARGS__);            \
+	printf("\n");                           \
+}
 
 #endif
