@@ -27,7 +27,7 @@
 #include "heap.h"
 #include "log.h"
 
-#define CONFIG_PAGE_SIZE 4096
+#define CONFIG_PAGE_SIZE            4096
 
 #define CONFIG_DEBUG_HEAP           0
 #define CONFIG_DEBUG_HEAP_NOISY     0
