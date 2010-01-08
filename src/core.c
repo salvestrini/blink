@@ -55,6 +55,44 @@ int elf_images_link(image_t * images)
         return 1;
 }
 
+static image_t * kernel_preload(image_t * images)
+{
+        image_t * p;
+
+        for (p = images; p != NULL; p = p->next) {
+                if (!strcmp(p->name, "kernel")) {
+                        /* We've got the kernel image */
+
+                        int (* kernel_preload)(void);
+                        kernel_preload =
+                                elf_image_symbol_lookup(p, "kernel_preload");
+
+                        /* Call kernel_preload() if available */
+                        if (kernel_preload) {
+                                log("Calling kernel_preload()");
+                                if (!kernel_preload()) {
+                                        return NULL;
+                                }
+                        }
+
+                        return p;
+                }
+        }
+
+        return NULL;
+}
+
+static int images_load(image_t * images)
+{
+        log("Linking all available images");
+
+        if (!elf_images_link(images)) {
+                return 0;
+        }
+
+        return 1;
+}
+
 void core(image_t * images)
 {
         log("%s version %s running ...\n", PACKAGE_NAME, PACKAGE_VERSION);
@@ -64,38 +102,15 @@ void core(image_t * images)
         log("Visit %s for updates\n", PACKAGE_URL);
         log("\n");
 
-        /* Load kernel image */
         image_t * kernel;
-        image_t * p;
 
-        kernel = NULL;
-        for (p = images; p != NULL; p = p->next) {
-                if (!strcmp(p->name, "kernel")) {
-                        /* We got the kernel image */
-                        kernel = p;
-
-                        /* Does the image provide a kernel_preload() symbol? */
-                        int (* kernel_preload)(void);
-                        kernel_preload =
-                                elf_image_symbol_lookup(kernel,
-                                                        "kernel_preload");
-
-                        /* Call kernel_preload() if available */
-                        if (kernel_preload) {
-                                if (!kernel_preload()) {
-                                        hang("Cannot preload kernel image");
-                                }
-                        }
-                }
-        }
-
+        kernel = kernel_preload(images);
         if (!kernel) {
-                hang("Cannot find a valid kernel image");
+                hang("Cannot preload kernel image");
         }
 
-        /* Perform linking over all available images */
-        if (!elf_images_link(images)) {
-                hang("Cannot perform linking");
+        if (!images_load(images)) {
+                hang("Cannot load images");
         }
 
         /* Jump to the entry point */
@@ -104,6 +119,8 @@ void core(image_t * images)
         if (!kernel_start) {
                 hang("Cannot find kernel entry point");
         }
+
+        log("Calling kernel_start()");
         kernel_start();
 
         /* Argh, we shouldn't have reached this point ... */
