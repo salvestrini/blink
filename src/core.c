@@ -38,23 +38,6 @@ void * elf_image_symbol_lookup(image_t *    image,
         return NULL;
 }
 
-int elf_images_link(image_t * images)
-{
-        assert(images);
-
-        /* XXX FIXME: This procedure is a shame, please use a better one ! */
-
-        image_t * p;
-        for (p = images; p != NULL; p = p->next) {
-                image_t * q;
-
-                for (q = images; q != NULL; q = q->next) {
-                }
-        }
-
-        return 1;
-}
-
 static image_t * kernel_preload(image_t * images)
 {
         image_t * p;
@@ -86,8 +69,14 @@ static int images_load(image_t * images)
 {
         log("Linking all available images");
 
-        if (!elf_images_link(images)) {
-                return 0;
+        /* XXX FIXME: This procedure is a shame, please use a better one ! */
+
+        image_t * p;
+        for (p = images; p != NULL; p = p->next) {
+                image_t * q;
+
+                for (q = images; q != NULL; q = q->next) {
+                }
         }
 
         return 1;
