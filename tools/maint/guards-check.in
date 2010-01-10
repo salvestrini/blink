@@ -571,6 +571,7 @@ sub guard_retrieve ($$$)
 
         if (($guard_cond == 1) && ($skip == 0)) {
             debug("Invalid guard \`" . $guard_curr . "', skipping");
+            $guard_curr = "";
             last;
         }
 
